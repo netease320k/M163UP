@@ -1,0 +1,19 @@
+title: 网易云音乐音质检查替换小组任务公示栏
+baseurl: "" # the subpath of your site, e.g. /blog
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+sass:
+  style: compressed
+
+exclude: ['js/node_modules','LICENSE','README.md']
+
+gems:
+- github-pages
+
+repository: hufan-Akari/M163UP
+
+# github:
+#     repository_nwo: hufan-Akari/M163UP

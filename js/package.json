@@ -1,0 +1,38 @@
+{
+  "name": "m163up",
+  "version": "1.0.0",
+  "description": "网易云音乐音质替换检查小组任务公示栏",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-production": "webpack -p --define process.env.NODE_ENV='\"production\"' --progress --colors"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hufan-Akari/M163UP.git"
+  },
+  "author": "阿卡琳",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/hufan-Akari/M163UP/issues"
+  },
+  "homepage": "https://github.com/hufan-Akari/M163UP#readme",
+  "dependencies": {
+    "babel-polyfill": "^6.13.0",
+    "isomorphic-fetch": "^2.2.1",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.1.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.15.0"
+  }
+}
