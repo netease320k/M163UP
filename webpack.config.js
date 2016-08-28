@@ -1,9 +1,9 @@
 var path = require('path');
 
 module.exports = {
-    entry: ['babel-polyfill',path.resolve(__dirname, './_src/index.js')],
+    entry: ['babel-polyfill',path.resolve(__dirname, './_javascript/index.js')],
     output: {
-        path: path.resolve(__dirname, './build'),
+        path: path.resolve(__dirname, './gh-pages/js'),
         filename: 'bundle.js',
     },
     module: {

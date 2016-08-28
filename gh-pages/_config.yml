@@ -1,7 +1,7 @@
-# for developing
+# for github only
 
 # Where things are
-source:       ./gh-pages
+source:       .
 destination:  ./_site
 layouts_dir:  _layouts
 data_dir:     _data
@@ -68,12 +68,3 @@ kramdown:
 
 sass:
   style: compressed
-
-# gems:
-#  - github-pages
-
-# repository: hufan-Akari/M163UP
-
-github:
-    repository_nwo: hufan-Akari/M163UP
-    project_tagline: 网易云音乐320K音质检查小组

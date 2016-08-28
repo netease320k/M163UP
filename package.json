@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-production": "webpack -p --define process.env.NODE_ENV='\"production\"' --progress --colors"
+    "build": "if [[ ${NODE_ENV} == \"production\" ]]; then npm run build:prod; else npm run build:dev; fi",
+    "build:dev": "webpack --progress --colors && jekyll b",
+    "build:prod": "webpack -p --define process.env.NODE_ENV='\"production\"' --progress --colors && jekyll b",
+    "start": "if [[ ${NODE_ENV} == \"production\" ]]; then npm run start:prod; else npm run start:dev; fi",
+    "start:dev": "webpack --watch --progress --colors & jekyll s -o",
+    "start:prod": "webpack -p --define process.env.NODE_ENV='\"production\"' --watch --progress --colors & jekyll s -o"
   },
   "repository": {
     "type": "git",
@@ -32,7 +37,6 @@
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.15.0"
+    "webpack": "^1.13.2"
   }
 }
