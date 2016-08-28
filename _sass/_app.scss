@@ -1,0 +1,224 @@
+nav{
+    margin-bottom: 1rem;
+}
+
+.issue-list{
+    margin: .5rem 0;
+    list-style: none;
+
+    > li {
+        margin-bottom: $spacing-unit;
+    }
+}
+
+.issue {
+    margin-bottom: 1em;
+    border: solid 1px #bfccd1;
+    border-radius: .5rem;
+
+  .issue-header{
+      padding: .5rem;
+      margin: 0;
+      background-color: #f2f8fa;
+      border-bottom: solid 1px #bfccd1;
+      border-top-left-radius: .5rem;
+      border-top-right-radius: .5rem;
+  }
+  .issue-body{
+      padding: .5rem;
+  }
+  .issue-footer{
+      padding: .5rem
+  }
+
+}
+
+.tag-list {
+    display: inline;
+    .label {
+        border: solid 2px;
+        border-radius: 5px;
+        padding: .2rem;
+    }
+}
+
+.label {
+    margin: 1px 5px;
+    &:hover{
+        text-decoration: none;
+    }
+    &.active{
+        border-bottom: solid 2px gray;
+    }
+}
+
+.progress-nav{
+    margin-bottom: 1rem;
+}
+
+
+button,.button {
+    position: relative;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #eee;
+    background-image: -webkit-linear-gradient(#fcfcfc, #eee);
+    background-image: linear-gradient(#fcfcfc, #eee);
+    border: 1px solid #d5d5d5;
+    border-radius: 3px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none
+}
+
+button:hover,
+.button:hover,
+button:active,
+.button:active {
+    text-decoration: none;
+    background-color: #ddd;
+    background-image: -webkit-linear-gradient(#eee, #ddd);
+    background-image: linear-gradient(#eee, #ddd);
+    border-color: #ccc
+}
+
+button.active,.button.active,
+#show-detail-checkbox:not(:checked) ~ .issue-state-settings #show-detail-label {
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+    background-color: #60b044;
+    background-image: -webkit-linear-gradient(#8add6d, #60b044);
+    background-image: linear-gradient(#8add6d, #60b044);
+    border-color: #5ca941
+}
+
+#show-detail-checkbox{
+    display: none;
+}
+
+#show-detail-checkbox:checked ~ .issue-list-container {
+    .issue-body {
+        display: none;
+    }
+
+}
+
+.pagination {
+    display: inline-block;
+    margin: .5rem 0;
+    padding-left: 0;
+    border-radius: 4px;
+
+    > li {
+        display: inline; // Remove list-style and block-level defaults
+        > a,
+        > span {
+            position: relative;
+            float: left; // Collapse white-space
+            padding: 6px 12px;
+            line-height: 20/14;
+            text-decoration: none;
+            color: $pagination-color;
+            background-color: $pagination-bg;
+            border: 1px solid $pagination-border;
+            margin-left: -1px;
+        }
+        &:first-child {
+            > a,
+            > span {
+                margin-left: 0;
+                @include border-left-radius(4px);
+            }
+        }
+        &:last-child {
+            > a,
+            > span {
+                @include border-right-radius(4px);
+            }
+        }
+    }
+
+    > li > a,
+    > li > span {
+        &:hover,
+        &:focus {
+            z-index: 2;
+            color: $pagination-hover-color;
+            background-color: $pagination-hover-bg;
+            border-color: $pagination-hover-border;
+        }
+    }
+
+    > .active > a,
+    > .active > span {
+        &,
+        &:hover,
+        &:focus {
+            z-index: 3;
+            color: $pagination-active-color;
+            background-color: #337ab7;
+            border-color: $pagination-active-border;
+            cursor: default;
+        }
+    }
+
+    > .disabled {
+        > span,
+        > span:hover,
+        > span:focus,
+        > a,
+        > a:hover,
+        > a:focus {
+            color: $pagination-disabled-color;
+            background-color: $pagination-disabled-bg;
+            border-color: $pagination-disabled-border;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.issue-state-settings{
+    margin: .5rem 0;
+}
+
+html,body {
+    height: 100%;
+}
+
+.site {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.page-content {
+    flex: 1 0 auto;
+}
+
+.site-header{
+    flex: none;
+}
+
+.issue[data-state='closed']{
+    background-color:lightgray;
+    background-image:-webkit-gradient(linear, 0 0, 100% 100%,
+            color-stop(0.25, rgba(255, 255, 255, 0.25)), color-stop(0.25, transparent),
+            color-stop(0.5, transparent), color-stop(.5, rgba(255, 255, 255, 0.25)),
+            color-stop(0.75, rgba(255, 255, 255, 0.25)), color-stop(0.75, transparent),
+            to(transparent));
+    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.25) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.25) 75%,
+            transparent 75%, transparent);
+    -webkit-background-size:1rem 1rem;
+    background-size:1rem 1rem;
+}
