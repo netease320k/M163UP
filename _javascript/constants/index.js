@@ -38,4 +38,4 @@ export const relLinktoPagenumber = (relLink) => {
 };;
 
 
-export const appVersion = 1;
+export const appVersion = 1.1;
