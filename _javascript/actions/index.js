@@ -12,7 +12,7 @@ const fetchData = (url, etag)=> (dispatch) => fetch(
         let new_etag = response.headers.get('etag');
         let link = response.headers.get('link');
         return response.json().then((data)=> {
-            dispatch(updateCache(url, {etag: new_etag, data,link}))
+            dispatch(updateCache(url, {etag: new_etag, data:data.filter(i=>i.pull_request==undefined),link}))
         })
     }
     else {
