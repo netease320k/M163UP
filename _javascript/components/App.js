@@ -9,57 +9,65 @@ import {concatIssueURL, labels_url, relLinktoPagenumber} from "../constants";
 import Pagination from './Pagination'
 
 const App = ({
+    labels,
     issues,
-    issueLabels,
-    caches,
     appState,
-    pagination,
     actions:{changeAppState}
 }) => {
-    if (issueLabels.length == 0) {
+    if (labels.length === 0 || issues === undefined) {
         return <p>加载中...</p>
     }
+
     return (
         <div>
-            <Nav labels={issueLabels}
+            <Nav labels={labels}
                  issueLabel={appState.issueLabel}
                  onLabelClick={(issueLabel)=>changeAppState({
-                     issueLabel,
-                     appState,
-                     caches
+                     issueLabel
                  })}/>
             <input id="show-detail-checkbox" type="checkbox"/>
             <IssueStateSettings issueState={appState.issueState}
                                 onButtonClick={(issueState)=>changeAppState({
-                                    issueState,
-                                    appState,
-                                    caches
+                                    issueState
                                 })}/>
 
-            {issues ?
-                <IssueList issues={issues}
-                           pagination={<Pagination pagination={pagination} issuePage={appState.issuePage}
-                                                   onPageClick={(page)=>changeAppState({
-                                                       issuePage: page, appState, caches
-                                                   })}/>}/>
-                : <p>加载中...</p>}
+            <IssueList issues={issues}/>
         </div>
 
     )
 };
 
 const mapStateToProps = (state) => {
-    const {appState, caches}=state;
-    const issueLabels = state.caches[labels_url] ? state.caches[labels_url].data : [];
-    const currentIndex = concatIssueURL(appState);
-    const issues = state.caches[currentIndex] ? state.caches[currentIndex].data : undefined;
-
+    const {appState, issues, labels, loading}=state;
     return {
-        issues,
-        issueLabels,
-        caches,
+        labels,
+        issues: Object.keys(issues)
+            .map(i => issues[i])
+            .sort((a, b) => b.id - a.id)
+            .filter(i => {
+                const {issueLabel, issueState} = appState;
+                let a, b;
+                switch (issueLabel) {
+                    case '':
+                        a = true;
+                        break;
+                    case 'no-label':
+                        a = i.labels.length == 0;
+                        break;
+                    default:
+                        a = i.labels.map( label => label.name).includes(issueLabel);
+                }
+                switch (issueState){
+                    case 'all':
+                        b=true;
+                        break;
+                    default:
+                        b= i.state === issueState
+                }
+                return a&&b;
+            })
+        ,
         appState,
-        pagination: relLinktoPagenumber(state.caches[currentIndex] && state.caches[currentIndex].link)
     }
 };
 
