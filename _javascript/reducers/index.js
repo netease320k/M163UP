@@ -6,7 +6,7 @@ const appState = (state = {
     showDetail: false,
     loading: true
 }, action)=> {
-    return action.type === 'CHANGE_APP_STATE' ? Object.assign({}, state, action.appState) : state;
+    return action.type === 'CHANGE_APP_STATE' ? Object.assign({}, state, {err:null},action.appState) : state;
 };
 
 const labels = (state = [], action) => {

@@ -6,7 +6,7 @@ export const changeAppState = appState =>({
     appState
 });
 
-export const updateEtags = ({url, etag, data, p })=> ({
+export const updateEtags = ({url, etag, data, p})=> ({
     type: 'UPDATE_ETAGS',
     etag: {[p]: {etag, data}}
 });
@@ -41,23 +41,31 @@ export const updateIssues = ({issues = []}) => ({
 
 const fetchData = ({url, etag, onSuccess})=>
     dispatch =>
-        fetch(getRequest(url, etag), {timeout: 10 * 1000}).then(
-            response => {
-                if (response.status >= 400) {
-                    //遇到错误,20秒钟后重试
-                    setTimeout(()=>dispatch(fetchData({url, etag, onSuccess})), 20 * 1000);
-                    throw new Error("Bad response from server");
-                }
-                if (response.ok) {
-                    const new_etag = response.headers.get('etag');
-                    const link = response.headers.get('link');
-                    return response.json().then((data)=> onSuccess({data, etag: new_etag, link}))
-                }
-                else if (response.status == 304) {
-                    //没有修改,5分钟后重新检测
-                    setTimeout(()=>dispatch(fetchData({url, etag, onSuccess})), 5 * 60 * 1000);
-
-                }
+        fetch(getRequest(url, etag), {timeout: 10 * 1000})
+            .then(
+                response => {
+                    if (response.status >= 400) {
+                        //遇到错误,20秒钟后重试
+                        setTimeout(()=>dispatch(fetchData({url, etag, onSuccess})), 20 * 1000);
+                        dispatch(changeAppState({err: `网络连接出错,错误代码:${response.status},错误信息:${response.statusText}`}));
+                        throw new Error("Bad response from server");
+                    }
+                    if (response.ok) {
+                        const new_etag = response.headers.get('etag');
+                        const link = response.headers.get('link');
+                        return response.json().then((data)=> onSuccess({data, etag: new_etag, link}))
+                    }
+                    if (response.status == 304) {
+                        //没有修改,5分钟后重新检测
+                        dispatch(changeAppState({loading: false}));
+                        setTimeout(()=>dispatch(fetchData({url, etag, onSuccess})), 5 * 60 * 1000);
+                    }
+                    console.log('We should not go here. What happened?')
+                })
+            .catch(error => {
+                //超时,20秒钟后重试
+                setTimeout(()=>dispatch(fetchData({url, etag, onSuccess})), 20 * 1000);
+                dispatch(changeAppState({err: `网络连接超时,错误信息:${error.message}`}));
             });
 
 
@@ -85,12 +93,15 @@ const fetchIssues = ({url = issues_url, etags = [], p = 1}) =>
             url,
             etag: (etags[p] && etags[p].etag),
             onSuccess: ({data, etag:new_etag, link})=> {
+                dispatch(changeAppState({loading: false}));
                 dispatch(updateIssues({issues: data}));
-                dispatch(updateEtags({url, etag: new_etag, data: data.map(issue=>issue.id) , p}));
+                dispatch(updateEtags({url, etag: new_etag, data: data.map(issue=>issue.id), p}));
                 const next = /<(.*)>; rel=\"next\"/.exec(link);
                 if (next) {
                     dispatch(changeAppState({loading: true}));
-                    setTimeout(()=>dispatch(fetchIssues({url: next[1], etags, p: p + 1})), 10 * 1000)
+                    setTimeout(()=> {
+                        dispatch(fetchIssues({url: next[1], etags, p: p + 1}))
+                    }, 10 * 1000)
                 }
                 else {
                     dispatch(changeAppState({loading: false}))
