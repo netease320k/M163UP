@@ -1,13 +1,13 @@
-import React from 'react'
+import React from "react";
 import Issue from "./Issue";
 
-const IssueList = ({issues, onTagClick, issueLabel}) => {
-    if (issues.length == 0) {
+const IssueList = ({issues, onTagClick, issueLabel,showDetail}) => {
+    if (issues.isEmpty()) {
         return <p>无数据</p>
     }
     return (<section className="issue-list-container">
             <ul className="issue-list">{
-                issues.map((issue)=> <Issue key={issue.id} issue={issue} issueLabel={issueLabel}
+                issues.valueSeq().map( issue => <Issue key={issue.id} issue={issue} issueLabel={issueLabel} showDetail={showDetail}
                                             onTagClick={onTagClick}/>)
             }
             </ul>

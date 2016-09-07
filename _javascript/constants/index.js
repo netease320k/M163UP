@@ -1,4 +1,3 @@
-// export const repository = 'hufan-Akari/M163UP';
 export const issues_url = `https://api.github.com/repos/${repository}/issues?state=all&per_page=100`;
 export const labels_url = `https://api.github.com/repos/${repository}/labels`;
 
@@ -20,7 +19,7 @@ export const getRequest = (url, etag) => {
     return new Request(url, myInit);
 };
 
-export const convertDateTime = (dateTimeString) => new Date(dateTimeString).toLocaleString().replace(/GMT.*/,'');
+export const convertDateTime = (dateTimeString) => new Date(dateTimeString).toLocaleString().replace(/GMT.*/, '');
 
 
-export const appVersion = 2;
+export const appVersion = 3;

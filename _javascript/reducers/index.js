@@ -1,31 +1,69 @@
-import {combineReducers} from 'redux'
+import {combineReducers} from "redux";
+import {List, Map, Seq} from "immutable";
+import {actions} from "../actions/actionTypes";
 
-const appState = (state = {
-    issueLabel: '',
+const appState = (state = Map({
+    issueLabel: ':all',
     issueState: 'all',
     showDetail: false,
     loading: true
-}, action)=> {
-    return action.type === 'CHANGE_APP_STATE' ? Object.assign({}, state, {err:null},action.appState) : state;
+}), action)=> {
+    return action.type === actions.CHANGE_APP_STATE ? state.merge({err: null}, action.appState) : state;
 };
 
-const labels = (state = [], action) => {
-    return action.type === 'UPDATE_LABELS' ? action.labels : state
+const labels = (state = List(), action) => {
+    return action.type === actions.UPDATE_LABELS ? List(action.labels.map(({name, color}) => ({name, color}))) : state
 };
 
-const issues = (state = {}, action)=> {
-    return action.type === 'UPDATE_ISSUES' ? Object.assign({}, state, ...action.issues.map(i => ({[i.id]: i}))) : state;
+const issues = (state = Map(), action)=> {
+    if (action.type === actions.UPDATE_ISSUES) {
+        const result = Seq(action.issues)
+            .filterNot(issue => issue.pull_request !== undefined)
+            .map(
+                ({
+                    id,
+                    title,
+                    body_html,
+                    state,
+                    labels,
+                    created_at,
+                    updated_at,
+                    closed_at,
+                    assignee,
+                    user:{login, html_url:user_url},
+                    comments,
+                    html_url
+                }) => ({
+                    id,
+                    title,
+                    body_html,
+                    state,
+                    labels: labels.map(({name, color}) => ({name, color})),
+                    created_at,
+                    updated_at,
+                    closed_at,
+                    assignee: assignee && {login: assignee.login, html_url: assignee.html_url},
+                    user: {login, html_url: user_url},
+                    comments,
+                    html_url
+                }
+                ))
+            .reduce((map, issue)=> map.set(issue.id, issue), state);
+        return result;
+    }
+    else return state
+
 };
 
-const etags = (state = {}, action)=> {
-    return action.type === 'UPDATE_ETAGS' ? Object.assign({}, state,action.etag): state
+const etags = (state = Map(), action)=> {
+    return action.type === actions.UPDATE_ETAGS || action.type === actions.INIT_ETAGS ? state.merge(Map(action.etag)) : state;
 };
 
-const app = combineReducers({
+export const app = combineReducers({
     appState,
     issues,
     etags,
     labels,
 });
 
-export default app
+export const initAppStore = app({}, {type: actions.INIT_APP});
