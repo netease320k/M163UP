@@ -2,44 +2,43 @@ import "babel-polyfill";
 import React from "react";
 import {render} from "react-dom";
 import {Provider} from "react-redux";
-import {createStore, applyMiddleware} from "redux";
-import app from "./reducers";
+import {createStore, applyMiddleware, compose} from "redux";
+import {app, initAppStore} from "./reducers";
 import App from "./components/App";
 import thunkMiddleware from "redux-thunk";
 import {initApp} from "./actions";
-import logger from 'redux-logger'
-import {appVersion} from './constants'
+import {storeDatabas, database} from "./middlewares";
+import {Map, List} from "immutable";
 
-const appVersionFromLocalStorage = localStorage.getItem('appVersion')||0;
-if (appVersionFromLocalStorage < appVersion) {
-    localStorage.clear();
-    localStorage.setItem('appVersion',appVersion);
+const middlewares = [thunkMiddleware, storeDatabas];
+
+if (process.env.NODE_ENV === `development`) {
+    const createLogger = require(`redux-logger`);
+    const logger = createLogger();
+    middlewares.push(logger);
 }
 
-let store = createStore(app, {
-        appState: JSON.parse(localStorage.getItem('appState'))||{
-            issueLabel: '',
-            issueState: 'all',
-            issuePage: 1,
-        },
-        caches: JSON.parse(localStorage.getItem('caches'))||{},
-    }, applyMiddleware(
-    thunkMiddleware,
-    logger()
-));
+(async()=> {
+    const etags = await database.getItem('etags');
+    const labels = await database.getItem('labels');
+    const appState = await database.getItem('appState');
+    const issues = await database.getItem('issues');
 
+    const store = compose(applyMiddleware(...middlewares))(createStore)(app, {
+            etags: Map(etags || initAppStore.etags),
+            labels: List(labels || initAppStore.labels),
+            appState: Map(appState || initAppStore.appState),
+            issues: Map(issues || initAppStore.issues)
+        }
+    );
 
-store.subscribe(() => {
-    localStorage.setItem('appState', JSON.stringify(store.getState().appState));
-    localStorage.setItem('caches', JSON.stringify(store.getState().caches));
-});
+    render(
+        <Provider store={store}>
+            <App />
+        </Provider>,
+        document.getElementById('app')
+    );
 
+    store.dispatch(initApp(store.getState().etags));
 
-render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.getElementById('app')
-);
-
-store.dispatch(initApp(store.getState().caches));
+})();
