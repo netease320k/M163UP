@@ -1,6 +1,6 @@
-import React from 'react'
-import Label from './Label'
-import {convertDateTime} from '../constants'
+import React from "react";
+import Label from "./Label";
+import {convertDateTime} from "../constants";
 
 const IssueHeader = ({title, labels})=>(
     <header className="issue-header">
@@ -12,7 +12,6 @@ const IssueHeader = ({title, labels})=>(
                     className="label"
                     color={label.color}
                     active={true}
-                    onClick={()=>undefined}
                 >{label.name}</Label>
             )}
         </ul>
@@ -27,10 +26,10 @@ const IssueFooter = ({children})=>(
     </footer>
 );
 
-const Issue = ({issue})=>(
+const Issue = ({issue,showDetail})=>(
     <section className="issue" data-state={issue.state}>
         <IssueHeader title={issue.title} labels={issue.labels} />
-        <div  className="issue-body" dangerouslySetInnerHTML={{__html: issue.body_html}}></div>
+        {showDetail?<div  className="issue-body" dangerouslySetInnerHTML={{__html: issue.body_html}}></div>:null}
         <IssueFooter>
             <a href={issue.user.html_url}>{issue.user.login}</a>
             <span> 提交于 {convertDateTime(issue.created_at)} </span>

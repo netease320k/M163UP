@@ -5,73 +5,43 @@ import IssueStateSettings from "./IssueStateSettings";
 import * as Actions from "../actions";
 import {bindActionCreators} from "redux";
 import IssueList from "./IssueList";
-import {concatIssueURL, labels_url, relLinktoPagenumber} from "../constants";
-import Pagination from './Pagination'
+import {getSelectIssues} from "../selectors";
+import Button from "./Button";
 
 const App = ({
     labels,
     issues,
     appState,
     actions:{changeAppState}
-}) => {
-    if (labels.length === 0 || issues === undefined) {
-        return <p>加载中...</p>
-    }
+}) => (
+    <div>
+        <Nav labels={labels}
+             issueLabel={appState.get('issueLabel')}
+             onLabelClick={(issueLabel)=>changeAppState({
+                 issueLabel
+             })}/>
+        <IssueStateSettings issueState={appState.get('issueState')}
+                            onButtonClick={(issueState)=>changeAppState({
+                                issueState
+                            })}/>
+        <Button active={appState.get('showDetail')} onClick={()=>changeAppState({
+            showDetail:!appState.get('showDetail')
+        })}>显示详细</Button>
+        <IssueList issues={issues} showDetail={appState.get('showDetail')}/>
+    </div>
+);
 
-    return (
-        <div>
-            <Nav labels={labels}
-                 issueLabel={appState.issueLabel}
-                 onLabelClick={(issueLabel)=>changeAppState({
-                     issueLabel
-                 })}/>
-            <input id="show-detail-checkbox" type="checkbox"/>
-            <IssueStateSettings issueState={appState.issueState}
-                                onButtonClick={(issueState)=>changeAppState({
-                                    issueState
-                                })}/>
-
-            <IssueList issues={issues}/>
-        </div>
-
-    )
-};
-
-const mapStateToProps = (state) => {
-    const {appState, issues, labels, loading}=state;
-    return {
+const mapStateToProps = state => {
+    const {appState, labels, loading}=state;
+    return ({
         labels,
-        issues: Object.keys(issues)
-            .map(i => issues[i])
-            .sort((a, b) => b.id - a.id)
-            .filter(i => {
-                const {issueLabel, issueState} = appState;
-                let a, b;
-                switch (issueLabel) {
-                    case '':
-                        a = true;
-                        break;
-                    case 'no-label':
-                        a = i.labels.length == 0;
-                        break;
-                    default:
-                        a = i.labels.map( label => label.name).includes(issueLabel);
-                }
-                switch (issueState){
-                    case 'all':
-                        b=true;
-                        break;
-                    default:
-                        b= i.state === issueState
-                }
-                return a&&b;
-            })
-        ,
+        issues: getSelectIssues(state),
         appState,
-    }
+        loading
+    });
 };
 
-const mapDispatchToProps = (dispatch)=> ({actions: bindActionCreators(Actions, dispatch)});
+const mapDispatchToProps = dispatch => ({actions: bindActionCreators(Actions, dispatch)});
 
 export default connect(
     mapStateToProps,

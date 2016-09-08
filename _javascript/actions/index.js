@@ -1,63 +1,64 @@
 import fetch from "isomorphic-fetch";
 import {getRequest, labels_url, issues_url} from "../constants";
+import {actions} from "./actionTypes";
 
 export const changeAppState = appState =>({
-    type: 'CHANGE_APP_STATE',
+    type: actions.CHANGE_APP_STATE,
     appState
 });
 
-export const updateEtags = ({url, etag, data, p })=> ({
-    type: 'UPDATE_ETAGS',
-    etag: {[p]: {etag, data}}
+export const updateEtags = ({url, etag, data, p, next})=> ({
+    type: actions.UPDATE_ETAGS,
+    etag: {[url]: {etag, data, next, p}}
 });
 
-export const updateLabels = ({labels = []}) =>({
-    type: 'UPDATE_LABELS',
-    labels: labels.map(({name, color}) => ({name, color}))
-});
-
-
-export const updateIssues = ({issues = []}) => ({
-    type: 'UPDATE_ISSUES',
-    issues: issues.filter(issue => issue.pull_request === undefined).map(({
-        id, title, body_html, state, labels, created_at, updated_at, closed_at, assignee, user:{login, html_url:user_url}, comments, html_url
-    }) => ({
-        id,
-        title,
-        body_html,
-        state,
-        labels: labels.map(({name, color}) => ({name, color})),
-        created_at,
-        updated_at,
-        closed_at,
-        assignee: assignee && {login: assignee.login, html_url: assignee.html_url},
-        user: {login, html_url: user_url},
-        comments,
-        html_url
-    }
-    ))
+export const updateLabels = ({labels}) =>({
+    type: actions.UPDATE_LABELS,
+    labels
 });
 
 
-const fetchData = ({url, etag, onSuccess})=>
+export const updateIssues = ({issues}) => ({
+    type: actions.UPDATE_ISSUES,
+    issues
+});
+
+
+const fetchData = ({url, etag, onSuccess, onNotModified})=>
     dispatch =>
-        fetch(getRequest(url, etag), {timeout: 10 * 1000}).then(
-            response => {
-                if (response.status >= 400) {
-                    //遇到错误,20秒钟后重试
-                    setTimeout(()=>dispatch(fetchData({url, etag, onSuccess})), 20 * 1000);
-                    throw new Error("Bad response from server");
-                }
-                if (response.ok) {
-                    const new_etag = response.headers.get('etag');
-                    const link = response.headers.get('link');
-                    return response.json().then((data)=> onSuccess({data, etag: new_etag, link}))
-                }
-                else if (response.status == 304) {
-                    //没有修改,5分钟后重新检测
-                    setTimeout(()=>dispatch(fetchData({url, etag, onSuccess})), 5 * 60 * 1000);
+        fetch(getRequest(url, etag), {timeout: 10 * 1000})
+            .then(
+                response => {
+                    const {status, statusText, ok} = response;
+                    const xRateLimitRemaining = Number(response.headers.get('X-RateLimit-Remaining'));
+                    const xRateLimitReset = new Date(response.headers.get('X-RateLimit-Reset') * 1000);
+                    let timeOffset = 0;
+                    if (xRateLimitRemaining <= 5) {
+                        const now = new Date();
+                        timeOffset = (xRateLimitReset - now ) / (xRateLimitRemaining + 1) + 1000;
+                    }
 
-                }
+                    if (status >= 400) {
+                        //遇到错误,10秒钟后重试
+                        // setTimeout(()=>dispatch(fetchData({url, etag, onSuccess, onNotModified})),timeOffset);
+                        dispatch(changeAppState({err: `网络连接出错,错误代码:${status},错误信息:${statusText}`}));
+                        throw new Error("Bad response from server");
+                    }
+                    if (status == 304) {
+                        onNotModified({timeOffset});
+                        return;
+                    }
+                    if (ok) {
+                        const new_etag = response.headers.get('etag');
+                        const link = response.headers.get('link');
+                        return response.json().then((data)=> onSuccess({data, etag: new_etag, link, timeOffset}))
+                    }
+                    console.log('We should not go here. What happened?')
+                })
+            .catch(error => {
+                //超时,10秒钟后重试
+                // setTimeout(()=>dispatch(fetchData({url, etag, onSuccess, onNotModified})), 10 * 1000);
+                // dispatch(changeAppState({err: `网络连接超时,错误信息:${error.message}`}));
             });
 
 
@@ -68,33 +69,49 @@ export const initApp = etags =>
     };
 
 const fetchLabels = ({etags})=>
-    dispatch =>
+    dispatch => {
         dispatch(fetchData({
             url: labels_url,
-            etag: (etags[0] && etags[0].etag),
+            etag: ((etags.get(labels_url) || {}).etag),
             onSuccess: ({data, etag:new_etag})=> {
                 dispatch(updateLabels({labels: data}));
                 dispatch(updateEtags({url: labels_url, etag: new_etag, p: 0}))
+            },
+            onNotModified: ()=> {
             }
         }));
+    };
 
 
 const fetchIssues = ({url = issues_url, etags = [], p = 1}) =>
     dispatch =>
         dispatch(fetchData({
             url,
-            etag: (etags[p] && etags[p].etag),
-            onSuccess: ({data, etag:new_etag, link})=> {
+            etag: ((etags.get(url) || {}).etag),
+            onSuccess: ({data, etag:new_etag, link, timeOffset})=> {
                 dispatch(updateIssues({issues: data}));
-                dispatch(updateEtags({url, etag: new_etag, data: data.map(issue=>issue.id) , p}));
                 const next = /<(.*)>; rel=\"next\"/.exec(link);
+                dispatch(updateEtags({url, etag: new_etag, data: data.map(issue=>issue.id), p, next: next && next[1]}));
                 if (next) {
                     dispatch(changeAppState({loading: true}));
-                    setTimeout(()=>dispatch(fetchIssues({url: next[1], etags, p: p + 1})), 10 * 1000)
+                    setTimeout(()=> {
+                        dispatch(fetchIssues({url: next[1], etags, p: p + 1}))
+                    }, timeOffset)
                 }
                 else {
                     dispatch(changeAppState({loading: false}))
                 }
+            },
+            onNotModified: ({timeOffset}) => {
+                if (etags.get(url).next)
+                    dispatch(changeAppState({loading: false}));
+                const next = etags.get(url).next;
+                if (next) {
+                    setTimeout(()=> {
+                        dispatch(fetchIssues({url: next, etags, p: p + 1}))
+                    }, timeOffset)
+                }
+
             }
         }));
 
