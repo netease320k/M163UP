@@ -47,16 +47,16 @@ export const storeDatabas = ({getState}) => (next) => (action) => {
     next(action);
     switch (action.type) {
         case actions.CHANGE_APP_STATE:
-            database.setItem('appState', getState().appState);
+            database.setItem('appState', getState().appState.toJS());
             break;
         case actions.UPDATE_LABELS:
-            database.setItem('labels', getState().labels);
+            database.setItem('labels', getState().labels.toJS());
             break;
         case actions.UPDATE_ETAGS:
-            database.setItem('etags', getState().etags);
+            database.setItem('etags', getState().etags.toJS());
             break;
         case actions.UPDATE_ISSUES:
-            database.setItem('issues', getState().issues);
+            database.setItem('issues', getState().issues.toJS());
             break;
     }
 };
