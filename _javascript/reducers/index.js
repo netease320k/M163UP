@@ -16,42 +16,41 @@ const labels = (state = List(), action) => {
 };
 
 const issues = (state = Map(), action)=> {
-    if (action.type === actions.UPDATE_ISSUES) {
-        const result = Seq(action.issues)
-            .filterNot(issue => issue.pull_request !== undefined)
-            .map(
-                ({
-                    id,
-                    title,
-                    body_html,
-                    state,
-                    labels,
-                    created_at,
-                    updated_at,
-                    closed_at,
-                    assignee,
-                    user:{login, html_url:user_url},
-                    comments,
-                    html_url
-                }) => ({
-                    id,
-                    title,
-                    body_html,
-                    state,
-                    labels: labels.map(({name, color}) => ({name, color})),
-                    created_at,
-                    updated_at,
-                    closed_at,
-                    assignee: assignee && {login: assignee.login, html_url: assignee.html_url},
-                    user: {login, html_url: user_url},
-                    comments,
-                    html_url
-                }
-                ))
-            .reduce((map, issue)=> map.set(issue.id, issue), state);
-        return result;
-    }
-    else return state
+    return action.type === actions.UPDATE_ISSUES ?
+        state.withMutations(state =>
+            Seq(action.issues)
+                .filterNot(issue => issue.pull_request !== undefined)
+                .map(
+                    ({
+                        id,
+                        title,
+                        body_html,
+                        state,
+                        labels,
+                        created_at,
+                        updated_at,
+                        closed_at,
+                        assignee,
+                        user:{login, html_url:user_url},
+                        comments,
+                        html_url
+                    }) => ({
+                        id,
+                        title,
+                        body_html,
+                        state,
+                        labels: labels.map(({name, color}) => ({name, color})),
+                        created_at,
+                        updated_at,
+                        closed_at,
+                        assignee: assignee && {login: assignee.login, html_url: assignee.html_url},
+                        user: {login, html_url: user_url},
+                        comments,
+                        html_url
+                    }
+                    ))
+                .reduce((map, issue)=> map.set(String(issue.id), issue), state)
+        ) : state;
 
 };
 
