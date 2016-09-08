@@ -105,9 +105,13 @@ const fetchIssues = ({url = issues_url, etags = [], p = 1}) =>
             onNotModified: ({timeOffset}) => {
                 if (etags.get(url).next)
                     dispatch(changeAppState({loading: false}));
-                setTimeout(()=> {
-                    dispatch(fetchIssues({url: etags.get(url).next, etags, p: p + 1}))
-                }, timeOffset)
+                const next = etags.get(url).next;
+                if (next) {
+                    setTimeout(()=> {
+                        dispatch(fetchIssues({url: next, etags, p: p + 1}))
+                    }, timeOffset)
+                }
+
             }
         }));
 
