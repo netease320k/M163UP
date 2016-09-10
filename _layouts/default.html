@@ -30,9 +30,9 @@
                 {% for node in site.pages %}
                 {% if 'navigation' == node.group %}
                 {% if page.url == node.url %}
-                <span class="active page-link" href="{{node.url}}">{{node.title}}</span>
+                <span class="active page-link">{{node.title}}</span>
                 {% else %}
-                <a class="page-link" href="{{node.url}}">{{node.title}}</a>
+                <a class="page-link" href="{{node.url | prepend: site.github.url }}">{{node.title}}</a>
                 {% endif %}
                 {% endif %}
                 {% endfor %}
