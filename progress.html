@@ -1,8 +1,16 @@
 ---
 layout: default
+title: 处理进度
+group: navigation
 ---
-<div id="app"></div>
+<div class="wrapper">
+    正在努力加载组件。。。
+    <noscript>
+        我们的页面构建于前沿的 HTML5 技术之上，Javascript 的支持是必要的。
+    </noscript>
+</div>
+
 <script>
 repository = '{{ site.github.repository_nwo }}';
 </script>
-<script src="{{ site.github.url }}/js/bundle.js" charset="utf-8"></script>
+<script src="{{ site.github.url }}/js/bundle.js" charset="utf-8" onerror="alert('组件加载失败，请刷新页面。')"></script>
