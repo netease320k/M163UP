@@ -42,6 +42,3 @@ if (process.env.NODE_ENV === `development`) {
     store.dispatch(initApp(store.getState().etags));
 
 })();
-
-console.info(`这里是 ${site.github.project_tagline}`);
-console.info(`欢迎加入我们的项目建设 ${site.github.repository_url}`);
