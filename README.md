@@ -8,12 +8,9 @@
 - jekyll
 
 ## 运行
-1. 克隆这个 repo
+1. fork 这个 repo
 
-    ```
-    git clone https://github.com/hufan-Akari/M163UP.git
-    cd M163UP
-    ```
+    [fork](https://github.com/hufan-Akari/M163UP/fork)
 
 2. 切换到本开发分支(dev)
 
