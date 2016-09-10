@@ -89,7 +89,6 @@ const fetchIssues = ({url = issues_url, etags = [], p = 1}) =>
             url,
             etag: ((etags.get(url) || {}).etag),
             onSuccess: ({data, etag:new_etag, link, timeOffset})=> {
-                console.log(data)
                 dispatch(updateIssues({issues: data}));
                 const next = /<(.*)>; rel=\"next\"/.exec(link);
                 dispatch(updateEtags({url, etag: new_etag, data: data.map(issue=>issue.id), p, next: next && next[1]}));
