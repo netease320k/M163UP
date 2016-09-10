@@ -1,22 +1,80 @@
 ---
 layout: default
+title: 专栏
+group: navigation
 ---
 
-<div class="home">
+<div class="wrapper">
 
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+    <ul class="post-list">
 
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.github.url }}">{{ post.title }}</a>
-        </h2>
-        <section>
-            {{ post.content | markdownify }}
-        </section>
-      </li>
-    {% endfor %}
-  </ul>
+        {% for post in site.posts %}
+        {% if post.top != null %}
+        <li class="post ribbon ">
+            <div class="ribbon-wrapper">
+                <div class="ribbon">TOP</div>
+            </div>
+
+            {% if post.img %}
+            <div class="post-image">
+                <img src="{{post.img}}" alt="">
+            </div>
+            {% endif %}
+
+            <header class="post-header">
+                <h2 class="post-title">
+                    <a class="post-link" href="{{ post.url | prepend: site.github.url }}">{{ post.title }}</a>
+                </h2>
+                <p class="post-meta">
+                    <time>
+                        {{ post.date | date_to_string }}
+                    </time>
+                    {% if post.author %}
+                    &middot;
+                    <span>{{ post.author }}</span>
+                    {% endif %}
+                </p>
+            </header>
+
+            <section class="post-content">
+                {{ post.excerpt | markdownify }}
+            </section>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% for post in site.posts %}
+        {% if post.top == null %}
+        <li class="post">
+
+            {% if post.img %}
+            <div class="post-image">
+                <img src="{{post.img}}" alt="">
+            </div>
+            {% endif %}
+
+            <header class="post-header">
+                <h2 class="post-title">
+                    <a class="post-link" href="{{ post.url | prepend: site.github.url }}">{{ post.title }}</a>
+                </h2>
+                <p class="post-meta">
+                    <time>
+                        {{ post.date | date_to_string }}
+                    </time>
+                    {% if post.author %}
+                    •
+                    <span>{{ post.author }}</span>
+                    {% endif %}
+                </p>
+            </header>
+
+            <section class="post-content">
+                {{ post.excerpt | markdownify }}
+            </section>
+        </li>
+
+        {% endif %}
+        {% endfor %}
+    </ul>
 
 </div>
