@@ -5,7 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.github.project_tagline | escape }}{% endif %}</title>
+  <title>
+      {% if page.title %}
+      {{ page.title | escape }} &middot; {{ site.github.project_tagline | escape }}
+      {% else %}
+      {{ site.github.project_tagline | escape }}
+      {% endif %}
+  </title>
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
   <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.github.url }}">
@@ -18,24 +24,32 @@
 
         <div class="wrapper">
           <a class="site-title" href="{{ site.github.url }}/">{{ site.github.project_tagline | escape }}</a>
-          <nav class="site-nav">
-            <a class="page-link" href="{{ site.github.url }}/">公告</a>
-            <a class="page-link" href="{{ site.github.url }}/progress/">处理进度</a>
-            <a class="page-link" href="{{ site.github.issues_url }}/new/" target="_blank">提交请求</a>
-          </nav>
 
+            <nav class="site-nav">
+                {% assign group = 'navigation' %}
+                {% for node in site.pages %}
+                {% if 'navigation' == node.group %}
+                {% if page.url == node.url %}
+                <span class="active page-link" href="{{node.url}}">{{node.title}}</span>
+                {% else %}
+                <a class="page-link" href="{{node.url}}">{{node.title}}</a>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% assign group = nil %}
+                <a class="page-link" href="{{ site.github.issues_url }}/new/" target="_blank">提交请求</a>
+
+            </nav>
         </div>
 
       </header>
-    <div class="page-content">
-      <div class="wrapper">
+    <main class="site-content">
         {{ content }}
-      </div>
-    </div>
+    </main>
 
     <footer class="site-footer">
         <div class="wrapper">
-            <p>© 网易云音乐音质检查替换小组  |  “网易云音乐”及“网易”是浙江杭州网易公司的商标。</p>
+            <p>© {{ site.github.project_tagline | escape }}  |  “网易云音乐”及“网易”是浙江杭州网易公司的商标。</p>
         </div>
     </footer>
 

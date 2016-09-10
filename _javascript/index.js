@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === `development`) {
     const store = compose(applyMiddleware(...middlewares))(createStore)(app, {
             etags: Map(etags || initAppStore.etags),
             labels: List(labels || initAppStore.labels),
-            appState: Map(appState || initAppStore.appState),
+            appState: Map(appState || initAppStore.appState).set('loading',true),
             issues: Map(issues || initAppStore.issues)
         }
     );
@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === `development`) {
         <Provider store={store}>
             <App />
         </Provider>,
-        document.getElementById('app')
+        document.querySelector('.site-content')
     );
 
     store.dispatch(initApp(store.getState().etags));
