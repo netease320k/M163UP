@@ -1,215 +1,571 @@
-nav{
-    margin-bottom: 1rem;
+@charset "utf-8";
+
+@import "variables";
+
+.progress-bar {
+  $action-color: $NetEaseRed;
+  $progress-border-color: $base-border-color;
+  $progress-border: 0px solid $progress-border-color;
+  $progress-meter-border-color: $action-color;
+  $progress-meter-border: 1px solid darken($progress-meter-border-color, 15%);
+  $progress-meter-color: $progress-meter-border-color;
+  $progress-background: darken($base-background-color, 5);
+  $progress-animation-duration: 0.7s;
+  $progress-height: 5px;
+
+  background-color: $progress-background;
+  box-shadow: inset 0 0 3px 0 rgba(darken($progress-background, 50%), 0.15);
+  height: $progress-height;
+  margin-top: -5px;
+  width: 100%;
+
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+
+  z-index: 233;
+
+  > span.meter {
+    animation: progress $progress-animation-duration linear infinite;
+    background-color: $progress-meter-color;
+    background-image: linear-gradient(
+                    -45deg, rgba(#fff, 0.5) 25%,
+                    transparent 25%,
+                    transparent 50%,
+                    rgba(#fff, 0.5) 50%,
+                    rgba(#fff, 0.5) 75%,
+                    transparent 75%
+    );
+    background-repeat: repeat-x;
+    background-size: 40px 40px;
+    //border: $progress-meter-border;
+    //border-radius: $base-border-radius / 1.5;
+    //box-sizing: border-box;
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
 }
 
-.issue-list{
-    margin: .5rem 0;
-    list-style: none;
+@-webkit-keyframes progress {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
 
-    > li {
-        margin-bottom: $spacing-unit;
+@-moz-keyframes progress {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+
+@-ms-keyframes progress {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+
+@-o-keyframes progress {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+
+@keyframes progress {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+
+.label-list {
+  $action-color: $NetEaseRed;
+  $base-font-color: black;
+  $button-group-background: $base-background-color;
+  $button-group-color: lighten($base-font-color, 30%);
+  $button-group-border: 1px solid silver;
+  $button-group-inner-border: 1px solid lighten(silver, 18%);
+  $button-group-background-checked: $action-color;
+  $button-group-color-checked: white;
+  $button-group-border-checked: darken($button-group-background-checked, 15%);
+
+  display: flex;
+  flex-flow: row wrap;
+
+  .label {
+    background: $button-group-background;
+    border-left: $button-group-border;
+    border-radius: 0;
+    border-right: $button-group-border;
+    color: $button-group-color;
+    flex: 1 0 auto;
+    font-size: $base-font-size;
+    font-weight: normal;
+    line-height: 1;
+    padding: 0.5rem .75rem;
+    margin: 0;
+    width: auto;
+    text-align: center;
+
+    -webkit-user-select: none;
+    user-select: none;
+
+    border-bottom: $button-group-border;
+    border-left: 0;
+    border-right: $button-group-inner-border;
+    border-top: $button-group-border;
+
+    &:focus,
+    &:hover {
+      background-color: darken($button-group-background, 3%);
     }
+
+    &:first-child {
+      border-left: $button-group-border;
+      @include border-left-radius($base-border-radius);
+    }
+
+    &:last-child {
+      border-right: $button-group-border;
+      @include border-right-radius($base-border-radius);
+    }
+  }
+
+  .label.active {
+    background: $button-group-background-checked;
+    border: 1px solid $button-group-border-checked;
+    box-shadow: inset 0 1px 2px darken($button-group-background-checked, 10%);
+    color: $button-group-color-checked;
+    cursor: default;
+  }
+
+  header.label {
+    cursor: default;
+    color: darkgray;
+    flex: 0 0 auto;
+    @include border-left-radius($base-border-radius);
+    &:hover {
+      background-color: $button-group-background;
+    }
+  }
+
+  button, span {
+    display: none;
+  }
+
+  @include media(min-width $large-screen) {
+    button, span {
+      display: inline-block;
+    }
+    select {
+      display: none;
+    }
+  }
+
+  select.label {
+    -webkit-appearance: none;
+    color: white;
+    background: $NetEaseRed;
+    background-image: -webkit-linear-gradient(bottom, darken($NetEaseRed, 5%), lighten($NetEaseRed, 5%));
+    background-image: linear-gradient(to top, darken($NetEaseRed, 5%), lighten($NetEaseRed, 5%));
+    border-right: $button-group-border;
+    box-shadow: inset 0 1px 2px darken($button-group-background-checked, 10%);
+
+    @include border-right-radius($base-border-radius);
+    @include border-left-radius(0);
+
+    &:hover, &:active, &:focus {
+      background: lighten($NetEaseRed, 5%);
+      background-image: -webkit-linear-gradient(bottom, $NetEaseRed, lighten($NetEaseRed, 10%));
+      background-image: linear-gradient(to top, $NetEaseRed, lighten($NetEaseRed, 10%));
+    }
+  }
+
+}
+
+.issue-state-settings {
+  $action-color: $NetEaseRed;
+  $base-font-color: black;
+  $button-group-background: $base-background-color;
+  $button-group-color: lighten($base-font-color, 30%);
+  $button-group-border: 1px solid silver;
+  $button-group-inner-border: 1px solid lighten(silver, 18%);
+  $button-group-background-checked: $action-color;
+  $button-group-color-checked: white;
+  $button-group-border-checked: darken($button-group-background-checked, 15%);
+
+  display: flex;
+  flex-flow: row wrap;
+
+  .state-setting-trigger, .button {
+    background: $button-group-background;
+    border-left: $button-group-border;
+    border-radius: 0;
+    border-right: $button-group-border;
+    color: $button-group-color;
+    flex: 0 0 auto;
+    font-size: $base-font-size;
+    font-weight: normal;
+    line-height: 1;
+    padding: 0.5rem .75rem;
+    margin: 0;
+    width: auto;
+    text-align: center;
+
+    -webkit-user-select: none;
+    user-select: none;
+
+    border-bottom: $button-group-border;
+    border-left: 0;
+    border-right: $button-group-inner-border;
+    border-top: $button-group-border;
+
+    &:focus,
+    &:hover {
+      background-color: darken($button-group-background, 3%);
+    }
+
+    &:last-child {
+      border-right: $button-group-border;
+      @include border-right-radius($base-border-radius);
+    }
+
+  }
+
+  .state-setting-trigger {
+    border-left: $button-group-border;
+    @include border-left-radius($base-border-radius);
+  }
+
+  #accordion-trigger:checked + .state-setting-trigger {
+    background-color: darken($button-group-background, 10%);
+  }
+
+  .button.active {
+    background: $button-group-background-checked;
+    border: 1px solid $button-group-border-checked;
+    box-shadow: inset 0 1px 2px darken($button-group-background-checked, 10%);
+    color: $button-group-color-checked;
+    cursor: default;
+  }
+
+  #accordion-trigger {
+    display: none;
+  }
+
+  button.button {
+    display: none;
+  }
+
+  .menu {
+    display: flex;
+    flex-flow: row wrap;
+  }
+
+  #accordion-trigger:checked ~ .menu {
+    button.button {
+      display: inline-block;
+    }
+  }
+
+  #accordion-trigger:not(:checked) ~ .menu {
+    .active {
+      border-right: $button-group-border;
+      @include border-right-radius($base-border-radius);
+    }
+  }
+
+}
+
+.switch {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+
+  label {
+    margin: 0 .5rem;
+  }
+
+  .label-switch, p {
+    flex: 0 0 auto;
+
+  }
+}
+
+.label-switch {
+  $action-color: $NetEaseRed;
+  $base-background-color: white !default;
+  $switch-width: 51px;
+  $switch-padding: 2px;
+  $switch-height: 31px;
+  $switch-radius: $switch-height;
+  $knob-size: $switch-height - ($switch-padding * 2);
+  $knob-radius: $switch-height - ($switch-padding * 2);
+  $knob-width: $knob-size;
+  $switch-background: $base-background-color;
+  $switch-border-background: darken($base-background-color, 9%);
+  $switch-shadow: 0 2px 5px transparentize(black, 0.6);
+
+  border-radius: $switch-radius;
+  cursor: pointer;
+  display: inline-block;
+  height: $switch-height;
+  position: relative;
+  width: $switch-width;
+
+  input[type="checkbox"] {
+    display: none;
+
+    + .checkbox {
+      background: $switch-border-background;
+      border: 0;
+      border-radius: $switch-radius;
+      cursor: pointer;
+      height: $switch-height;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      transition: all 0.3s ease;
+      width: $switch-width;
+      z-index: 0;
+
+      &::before {
+        @include position(absolute, 2px 0 0 2px);
+        background: $switch-background;
+        border-radius: $switch-radius;
+        content: "";
+        height: $knob-radius;
+        transform: scale(1);
+        transition: all 0.3s ease;
+        width: $switch-width - ($switch-padding * 2);
+        z-index: 1;
+      }
+
+      &::after {
+        @include position(absolute, 2px 0 0 2px);
+        @include size($knob-size);
+        background: $switch-background;
+        border-radius: $knob-radius;
+        box-shadow: $switch-shadow;
+        content: "";
+        transition: all 0.3s ease;
+        z-index: 2;
+      }
+    }
+
+    &:checked {
+      + .checkbox {
+        background: $action-color;
+
+        &::before {
+          transform: scale(0);
+        }
+
+        &::after {
+          left: $switch-width - $knob-width - ($switch-padding);
+        }
+      }
+    }
+  }
+}
+
+.app-header {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between;
+
+  section, .label-list {
+    margin-bottom: .5rem;
+    align-self: center;
+  }
+  .label-list {
+    width: 100%;
+  }
+  @include media(min-width $medium-screen max-width $large-screen) {
+    .label-list {
+      width: auto;
+    }
+  }
+}
+
+.breadcrumb {
+  $breadcrumb-border-color: $base-border-color;
+  $breadcrumb-border: 1px solid $breadcrumb-border-color;
+  $breadcrumb-height: 2em;
+  $breadcrumb-arrow-color: $breadcrumb-border-color;
+  $breadcrumb-background-active: $NetEaseRed;
+  $breadcrumb-background: $base-background-color;
+  $breadcrumb-inactive-hover-color: $breadcrumb-background;
+  $breadcrumb-color: $medium-gray;
+  $breadcrumb-color-hover: $action-color;
+  $breadcrumb-color-active: $breadcrumb-color;
+
+  display: inline-block;
+
+  margin-bottom: $base-spacing;
+  text-align: left;
+
+  .button {
+    margin: 0;
+    background-color: $breadcrumb-background;
+    border: $breadcrumb-border;
+    border-left: 0;
+    color: $breadcrumb-color;
+    display: inline-block;
+    line-height: $breadcrumb-height;
+    padding: 0 ($breadcrumb-height / 4) 0 ($breadcrumb-height / 2);
+    position: relative;
+    text-decoration: none;
+    vertical-align: middle;
+
+    &:first-child {
+      border-bottom-left-radius: $base-border-radius;
+      border-left: $breadcrumb-border;
+      border-top-left-radius: $base-border-radius;
+      padding-left: $breadcrumb-height / 2;
+    }
+
+    &:last-child {
+      background-color: $breadcrumb-background;
+      border-bottom-right-radius: $base-border-radius;
+      border-top-right-radius: $base-border-radius;
+      color: $breadcrumb-color-active;
+      padding-right: $breadcrumb-height / 2;
+    }
+
+    &:focus,
+    &:hover {
+      background-color: $breadcrumb-inactive-hover-color;
+      color: black;
+    }
+
+    &::after,
+    &::before {
+      @include position(absolute, 0 auto 0 100%);
+      border-bottom: $breadcrumb-height / 2 solid transparent;
+      border-left: $breadcrumb-height / 4 solid transparent;
+      border-top: $breadcrumb-height / 2 solid transparent;
+      content: "";
+      display: block;
+      margin: auto;
+      z-index: 2;
+    }
+
+    &:last-child::after,
+    &:last-child::before {
+      border: 0;
+    }
+
+    &::before {
+      border-left-color: $breadcrumb-arrow-color;
+      margin-left: 1px;
+      z-index: 1;
+    }
+
+    &::after {
+      border-left-color: $breadcrumb-background;
+    }
+
+  }
+
+  .active {
+    color: white;
+    cursor: default;
+    &:focus,
+    &:hover {
+      color: white;
+      background-color: $breadcrumb-background-active;
+    }
+
+    &:last-child {
+      color: white;
+
+      background-color: $breadcrumb-background-active;
+    }
+
+    background-color: $breadcrumb-background-active;
+    &::after {
+      border-left-color: $breadcrumb-background-active;
+    }
+  }
+}
+
+.flash-error {
+  $color: lighten($NetEaseRed,50%);
+  background-color: $color;
+  color: shade($color, 60%);
+  display: block;
+  margin-bottom: $base-spacing / 2;
+  padding: $base-spacing / 2;
+  text-align: center;
+
+  &:before{
+    content: '❌️';
+  }
 }
 
 .issue {
-    margin-bottom: 1em;
-    border: solid 1px #bfccd1;
-    border-radius: .5rem;
+  border: 1px solid silver;
+  margin: .5rem -1rem;
+  background-color: white;
+
+  @include media($medium-screen){
+    border-radius: $base-border-radius*2;
+    margin: 0;
+    margin-bottom: 1rem;
+  }
 
   .issue-header{
-      padding: .5rem;
-      margin: 0;
-      background-color: #f2f8fa;
-      border-bottom: solid 1px #bfccd1;
-      border-top-left-radius: .5rem;
-      border-top-right-radius: .5rem;
+    background-color: darken(white,5%);
+    border-bottom: 1px solid $NetEaseRed;
+
+    @include media($medium-screen){
+      @include border-top-radius($base-border-radius*2);
+    }
+
+    .tag-list{
+      display: inline-block;
+      margin-left: 1rem;
+      .label{
+        margin: 0 .5rem;
+        outline-style: solid;
+        outline-width: 2px;
+      }
+    }
   }
-  .issue-body{
-      padding: .5rem;
-  }
+
+  .issue-header,
+  .issue-body,
   .issue-footer{
-      padding: .5rem
+    padding: .25rem .75rem;
+
+    @include media($medium-screen){
+      padding: .5rem 1rem ;
+    }
+
   }
 
-}
-
-.tag-list {
-    display: inline;
-    .label {
-        border: solid 2px;
-        border-radius: 5px;
-        padding: .2rem;
-    }
-}
-
-.label {
-    margin: 1px 5px;
-    &:hover{
-        text-decoration: none;
-    }
-    &.active{
-        border-bottom: solid 2px gray;
-    }
-}
-
-.progress-nav{
-    margin-bottom: 1rem;
-}
+  .out-link:after{
+    content: ' >';
+  }
 
 
-button,.button {
-    position: relative;
-    display: inline-block;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 20px;
-    color: #333;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color: #eee;
-    background-image: -webkit-linear-gradient(#fcfcfc, #eee);
-    background-image: linear-gradient(#fcfcfc, #eee);
-    border: 1px solid #d5d5d5;
-    border-radius: 3px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none
-}
-
-button:hover,
-.button:hover,
-button:active,
-.button:active {
-    text-decoration: none;
-    background-color: #ddd;
-    background-image: -webkit-linear-gradient(#eee, #ddd);
-    background-image: linear-gradient(#eee, #ddd);
-    border-color: #ccc
-}
-
-button.active,.button.active,
-#show-detail-checkbox:not(:checked) ~ .issue-state-settings #show-detail-label {
-    color: #fff;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
-    background-color: #60b044;
-    background-image: -webkit-linear-gradient(#8add6d, #60b044);
-    background-image: linear-gradient(#8add6d, #60b044);
-    border-color: #5ca941
-}
-
-#show-detail-checkbox{
-    display: none;
-}
-
-#show-detail-checkbox:checked ~ .issue-list-container {
-    .issue-body {
-        display: none;
-    }
-
-}
-
-.pagination {
-    display: inline-block;
-    margin: .5rem 0;
-    padding-left: 0;
-    border-radius: 4px;
-
-    > li {
-        display: inline; // Remove list-style and block-level defaults
-        > a,
-        > span {
-            position: relative;
-            float: left; // Collapse white-space
-            padding: 6px 12px;
-            line-height: 20/14;
-            text-decoration: none;
-            color: $pagination-color;
-            background-color: $pagination-bg;
-            border: 1px solid $pagination-border;
-            margin-left: -1px;
-        }
-        &:first-child {
-            > a,
-            > span {
-                margin-left: 0;
-                @include border-left-radius(4px);
-            }
-        }
-        &:last-child {
-            > a,
-            > span {
-                @include border-right-radius(4px);
-            }
-        }
-    }
-
-    > li > a,
-    > li > span {
-        &:hover,
-        &:focus {
-            z-index: 2;
-            color: $pagination-hover-color;
-            background-color: $pagination-hover-bg;
-            border-color: $pagination-hover-border;
-        }
-    }
-
-    > .active > a,
-    > .active > span {
-        &,
-        &:hover,
-        &:focus {
-            z-index: 3;
-            color: $pagination-active-color;
-            background-color: #337ab7;
-            border-color: $pagination-active-border;
-            cursor: default;
-        }
-    }
-
-    > .disabled {
-        > span,
-        > span:hover,
-        > span:focus,
-        > a,
-        > a:hover,
-        > a:focus {
-            color: $pagination-disabled-color;
-            background-color: $pagination-disabled-bg;
-            border-color: $pagination-disabled-border;
-            cursor: not-allowed;
-        }
-    }
-}
-
-.issue-state-settings{
-    margin: .5rem 0;
-}
-
-html,body {
-    height: 100%;
-}
-
-.site {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.page-content {
-    flex: 1 0 auto;
-}
-
-.site-header{
-    flex: none;
-}
-
-.issue[data-state='closed']{
+  &[data-state='closed']{
     background-color:lightgray;
     background-image:-webkit-gradient(linear, 0 0, 100% 100%,
             color-stop(0.25, rgba(255, 255, 255, 0.25)), color-stop(0.25, transparent),
@@ -221,4 +577,12 @@ html,body {
             transparent 75%, transparent);
     -webkit-background-size:1rem 1rem;
     background-size:1rem 1rem;
+  }
+
+  box-shadow: 2px 2px 5px darken($base-background-color, 10%);
+
+
+  &:hover {
+    box-shadow: 4px 4px 10px darken($base-background-color, 20%);
+  }
 }
