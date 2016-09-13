@@ -45,7 +45,7 @@
       transition: all 0.2s ease-in-out;
       position: relative;
       z-index: 1;
-      background-color: rgba(white,.5);
+      background-color: rgba(white, .5);
       -webkit-backdrop-filter: blur(5px);
       text-shadow: 0 0 2px white;
 
@@ -105,5 +105,21 @@ article {
 
   .post-header {
     margin-bottom: 2rem;
+    border-bottom: 1px solid $NetEaseRed;
   }
+}
+
+/**
+ * Lists
+ */
+ul, ol {
+  margin-left: $base-spacing;
+}
+
+ol {
+  li {
+    margin-bottom: 0;
+    list-style-type: decimal;
+  }
+
 }

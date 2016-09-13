@@ -9,6 +9,13 @@ footer {
   margin: 0;
 }
 
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+ul, ol, dl, figure,
+%vertical-rhythm {
+  margin-bottom: $base-spacing / 2;
+}
+
 .wrapper {
   @include outer-container;
   @include pad(1rem 2rem);
