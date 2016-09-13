@@ -130,5 +130,9 @@ article {
       list-style-type: disc;
     }
   }
+
+  hr{
+    border-bottom: 1px dashed $NetEaseRed;
+  }
 }
 
