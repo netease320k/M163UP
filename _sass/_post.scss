@@ -25,7 +25,7 @@
     transition: all 0.2s ease-in-out;
 
     .post-image {
-      max-height: 10rem;
+      max-height: 15rem;
       overflow: hidden;
       margin-bottom: -4.5rem;
 
@@ -35,7 +35,6 @@
         opacity: 1;
         transition: all 0.2s ease-in-out;
         width: 100%;
-        height: 10rem;
       }
     }
 
@@ -46,12 +45,13 @@
       transition: all 0.2s ease-in-out;
       position: relative;
       z-index: 1;
+      background-color: rgba(white,.5);
+      -webkit-backdrop-filter: blur(5px);
+      text-shadow: 0 0 2px white;
 
       .post-title {
         font-size: 1.5rem;
         margin-bottom: 0;
-        .post-link {
-        }
       }
 
       .post-meta {

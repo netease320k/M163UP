@@ -26,6 +26,8 @@ footer {
   display: flex;
   flex-direction: column;
   background-color: #FAFAFA;
+
+  text-align: justify;
 }
 
 .site-header {
@@ -119,6 +121,7 @@ a.page-link:hover {
 .ribbon-wrapper {
   $ribbon-background: $NetEaseRed;
   $ribbon-size: 85px;
+  z-index: 3;
 
   @include size($ribbon-size);
   overflow: hidden;
