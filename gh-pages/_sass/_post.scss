@@ -1,6 +1,7 @@
 @import "variables";
 
 .post-list {
+  margin: 0;
   .post {
     $card-border-color: $base-border-color;
     $card-border: 1px solid $card-border-color;
@@ -107,19 +108,26 @@ article {
     margin-bottom: 2rem;
     border-bottom: 1px solid $NetEaseRed;
   }
-}
 
-/**
+  /**
  * Lists
  */
-ul, ol {
-  margin-left: $base-spacing;
-}
-
-ol {
-  li {
-    margin-bottom: 0;
-    list-style-type: decimal;
+  ul, ol {
+    margin-left: $base-spacing;
   }
 
+  ol {
+    li {
+      margin-bottom: 0;
+      list-style-type: decimal;
+    }
+
+  }
+  ul {
+    li {
+      margin-bottom: 0;
+      list-style-type: disc;
+    }
+  }
 }
+
