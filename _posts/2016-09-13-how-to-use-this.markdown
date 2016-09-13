@@ -35,4 +35,6 @@ excerpt_separator: "<!-- more -->"
 集中开发阶段已过，接下来是缓慢的测试以及完善阶段。
 如果你有兴趣，欢迎[加入](https://github.com/netease320k/netease320k.github.io)本项目的开发。
 
+---
+
 萌萌的[阿卡琳](http://music.163.com/user/home?id=45441555)敬上。(恥かし >_< )
