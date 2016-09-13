@@ -83,13 +83,14 @@
 .post-image {
   overflow: hidden;
   display: flex;
+  justify-content: center;
 
   img {
     @include border-top-radius($base-border-radius);
     object-fit: cover;
     opacity: 1;
     transition: all 0.2s ease-in-out;
-    flex: 1 0 auto;
+    flex: 0 1 auto;
   }
 }
 
