@@ -33,9 +33,11 @@
       img {
         @include border-top-radius($base-border-radius);
         object-fit: cover;
-        opacity: 1;
         transition: all 0.2s ease-in-out;
         width: 100%;
+        z-index: auto;
+        max-height: 15rem;
+        height: 100%;
       }
     }
 
@@ -80,17 +82,22 @@
   }
 }
 
-.post-image {
+.site-content > .post-image {
   overflow: hidden;
   display: flex;
   justify-content: center;
 
   img {
     @include border-top-radius($base-border-radius);
-    object-fit: cover;
-    opacity: 1;
     transition: all 0.2s ease-in-out;
     flex: 0 1 auto;
+    min-width: 100%;
+    z-index: -1;
+
+    @include media($max-width){
+      min-width: $max-width;
+    }
+
   }
 }
 
