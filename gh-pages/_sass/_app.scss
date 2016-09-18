@@ -103,8 +103,8 @@
   $button-group-color-checked: white;
   $button-group-border-checked: darken($button-group-background-checked, 15%);
 
-  display: flex;
-  flex-flow: row wrap;
+  @include flexbox;
+  @include flex-flow(row wrap);
 
   .label {
     background: $button-group-background;
@@ -112,7 +112,7 @@
     border-radius: 0;
     border-right: $button-group-border;
     color: $button-group-color;
-    flex: 1 0 auto;
+    @include flex(1 0 auto);
     font-size: $base-font-size;
     font-weight: normal;
     line-height: 1;
@@ -156,7 +156,7 @@
   header.label {
     cursor: default;
     color: darkgray;
-    flex: 0 0 auto;
+    @include flex(0 0 auto);
     @include border-left-radius($base-border-radius);
     &:hover {
       background-color: $button-group-background;
@@ -208,8 +208,8 @@
   $button-group-color-checked: white;
   $button-group-border-checked: darken($button-group-background-checked, 15%);
 
-  display: flex;
-  flex-flow: row wrap;
+  @include flexbox;
+  @include flex-flow(row wrap);
 
   .state-setting-trigger, .button {
     background: $button-group-background;
@@ -217,7 +217,7 @@
     border-radius: 0;
     border-right: $button-group-border;
     color: $button-group-color;
-    flex: 0 0 auto;
+    @include flex(0 0 auto);
     font-size: $base-font-size;
     font-weight: normal;
     line-height: 1;
@@ -272,8 +272,8 @@
   }
 
   .menu {
-    display: flex;
-    flex-flow: row wrap;
+    @include flexbox;
+    @include flex-flow(row wrap);
   }
 
   #accordion-trigger:checked ~ .menu {
@@ -292,16 +292,16 @@
 }
 
 .switch {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
+  @include flexbox;
+  @include flex-flow(row wrap);
+  @include align-items(center);
 
   label {
     margin: 0 .5rem;
   }
 
   .label-switch, p {
-    flex: 0 0 auto;
+    @include flex(0 0 auto);
 
   }
 }
@@ -384,10 +384,10 @@
 }
 
 .app-header {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  justify-content: space-between;
+  @include flexbox;
+  @include flex-flow(row wrap);
+  @include align-items(center);
+  @include justify-content(space-between);
 
   section, .label-list {
     margin-bottom: .5rem;
