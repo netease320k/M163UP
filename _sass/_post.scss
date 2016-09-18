@@ -14,8 +14,8 @@
     border: $card-border;
     border-radius: $base-border-radius;
     box-shadow: 0 2px 4px darken($base-background-color, 10%);
-    flex-basis: 15em;
-    flex-grow: 1;
+    @include flex-basis(15em);
+    @include flex-grow(1);
     margin: 0 $card-margin $base-spacing/2 $card-margin;
 
     @include media($medium-screen) {
@@ -84,13 +84,13 @@
 
 .site-content > .post-image {
   overflow: hidden;
-  display: flex;
-  justify-content: center;
+  @include flexbox;
+  @include justify-content(center);
 
   img {
     @include border-top-radius($base-border-radius);
     transition: all 0.2s ease-in-out;
-    flex: 0 1 auto;
+    @include flex(0 1 auto);
     min-width: 100%;
     z-index: -1;
 
