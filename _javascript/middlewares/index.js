@@ -8,6 +8,13 @@ export const database = new class {
             name: 'NetEaseMusic320K',
             storeName: 'app',
         });
+        (async ()=>{
+            const v = await localforage.getItem('appVersion');
+            if(v<appVersion){
+                await localforage.clear();
+                await localforage.setItem('appVersion',appVersion);
+            }
+        })();
         this.quotaExceeded = false;
         this.getItem = localforage.getItem;
     }

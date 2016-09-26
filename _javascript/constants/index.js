@@ -22,4 +22,4 @@ export const getRequest = (url, etag) => {
 export const convertDateTime = (dateTimeString) => new Date(dateTimeString).toLocaleString().replace(/GMT.*/, '');
 
 
-export const appVersion = 3;
+export const appVersion = 4;

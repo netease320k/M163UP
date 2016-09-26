@@ -20,6 +20,7 @@ const issues = (state = Map(), action)=> {
         state.withMutations(state =>
             Seq(action.issues)
                 .filterNot(issue => issue.pull_request !== undefined)
+                .filterNot(issue => issue.labels.some( label => label.name === ':not-show'))
                 .map(
                     ({
                         id,
