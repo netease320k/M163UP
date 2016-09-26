@@ -16,6 +16,11 @@ ul, ol, dl, figure,
   margin-bottom: $base-spacing / 2;
 }
 
+pre{
+  overflow: scroll;
+  background-color: #f7f7f7;
+}
+
 .wrapper {
   @include outer-container;
   @include pad(1rem 2rem);
