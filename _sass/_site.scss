@@ -43,6 +43,7 @@ pre{
 }
 
 .site-header {
+  z-index: 5;
   @include flex(none);
   .wrapper {
     @include flexbox();

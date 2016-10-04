@@ -83,16 +83,15 @@
 }
 
 .site-content > .post-image {
-  overflow: hidden;
-  @include flexbox;
-  @include justify-content(center);
+  text-align:center;
+  // @include flexbox;
+  // @include justify-content(center);
 
   img {
-    @include border-top-radius($base-border-radius);
+    display: inline-block;
     transition: all 0.2s ease-in-out;
-    @include flex(0 1 auto);
+    // @include flex(0 1 auto);
     min-width: 100%;
-    z-index: -1;
 
     @include media($max-width){
       min-width: $max-width;
@@ -142,4 +141,3 @@ article {
     border-bottom: 1px dashed $NetEaseRed;
   }
 }
-
